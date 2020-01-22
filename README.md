@@ -9,4 +9,4 @@ A breve pubblicherò un file contenente la descrizione del progetto, le scelte e
 
 Quando sarò certa dei collegamenti Hardware, pubblicherò uno schema elettrico.
 
-Ultimo aggiornamento: 14:32, 18/01/2020
+Ultimo aggiornamento: 01:38, 22/01/2020
