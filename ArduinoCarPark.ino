@@ -6,7 +6,7 @@
 #include <MFRC522.h>
 #include <ESP8266WiFi.h>
 #include <FirebaseArduino.h>
-#include <Servo.h> 
+#include <LinkedList.h>
 
 //SS permette la comunicazione via SPI, il secondo permette il reset
 MFRC522 mfrc522(SS_PIN, RST_PIN);
@@ -15,6 +15,12 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 #define FIREBASE_AUTH "NKb6SKiqBLxTyzmbQBgEuycPckt28FBdlMJSv3hP"
 #define WIFI_SSID "prova"
 #define WIFI_PASSWORD "auri1998"
+
+LinkedList<String> codici = LinkedList<String>();
+LinkedList<String> accessi = LinkedList<String>();
+int num_codici;
+int num_accessi;
+int indice;
 
 void setup(){
   Serial.begin(115200);   //inizio la comunicazione seriale (mi serve per il monitor)
@@ -44,21 +50,33 @@ void setup(){
   
   //inizializzo la comunicazione col mio database
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+
+  //vedo quanti utenti sono registrati e salvo i loro codici in un array;
+  int i = 1;
+  Serial.println();
+  Serial.println("Lista dei codici di utenti registrati:");
+  while(1){
+    String stringa = Firebase.getString("ID clienti registrati/" + String(i) + "/codice");
+    if (Firebase.success() && !stringa.equals("")){
+      codici.add(stringa);
+      Serial.println(codici.get(i-1));
+    }
+    else
+      break;
+    i++;
+  }
+  //salvo il numero di codici
+  num_codici = codici.size();
 }
 
 void loop(){
-
-  Serial.println(Firebase.getString("/ID clienti registrati/Aurora"));
+  
   //controlla se viene appoggiato un badge
   if ( ! mfrc522.PICC_IsNewCardPresent())
     return;
   //cerca di leggere il badge
   if ( ! mfrc522.PICC_ReadCardSerial()) 
     return;
-  
-  //creato oggetto json
-  StaticJsonBuffer<200> jsonBuffer;
-  JsonObject& valueObject = jsonBuffer.createObject();
     
   //viene mostrato l'UID sul monitor
   Serial.println();
@@ -74,8 +92,31 @@ void loop(){
   }
   content.toUpperCase();
   Serial.println();
+
+  //controlla che il codice scannerizzato sia all'interno della lista dei codici che hanno già fatto accesso, se sì esce
+  for(int i = 0; i < num_accessi; i++){
+    if(accessi.get(i).equals(content.substring(1))){
+       Serial.println("Arrivederci :)");
+       accessi.remove(i);
+       num_accessi--;
+       delay(5000);
+       return;
+    }
+  }
+  //controlla che il codice scannerizzato sia all'interno della lista dei codici che ha la facoltà di accedere
+  bool esiste = false;
+  for(int i = 0; i < num_codici; i++){
+    if(codici.get(i).equals(content.substring(1))){
+       esiste = true;
+       indice = i+1;
+    }
+  }
+  
   //se la stringa corrisponde ad una dei codici che hanno accesso, l'accesso viene accordato, altrimenti non viene accordato
-  if ((content.substring(1) == ("A7 50 80 63"))){
+  if (esiste == true){
+    accessi.add(content.substring(1));
+    num_accessi++;
+    
     digitalWrite(D3,LOW);
     digitalWrite(D8,LOW);
     digitalWrite(D4,HIGH);
@@ -85,19 +126,20 @@ void loop(){
     digitalWrite(D4,LOW);
     
     //stampa sul monitor
-    Serial.println("Access Granted :)"); 
-    Serial.println(content.substring(1));
+    Serial.println("Accesso consentito"); 
     
     //viene mandato il valore nel database
     String a = content.substring(1);
     Firebase.pushString("ID clienti che hanno fatto accesso", a);
-        
-    Serial.println("Welcome in our ArduinoCarPark");
+    Serial.print("Ciao ");
+    Serial.print(Firebase.getString("ID clienti registrati/" + String(indice) + "/nome"));
+    Serial.println(" :)");
+    
     delay(1000);
     Serial.println(" ");
   } 
   else
-    Serial.println("Access Denied :(");
+    Serial.println("Accesso Negato :(");
   
   delay(5000);
   return;
