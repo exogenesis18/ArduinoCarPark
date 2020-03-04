@@ -13,7 +13,7 @@
 
 //SS permette la comunicazione via SPI, il secondo permette il reset
 MFRC522 mfrc522(SS_PIN, RST_PIN);
-SoftwareSerial s(3, 1);
+SoftwareSerial s(D3, D4);
 
 #define FIREBASE_HOST "arduinocarpark-database.firebaseio.com"
 #define FIREBASE_AUTH "NKb6SKiqBLxTyzmbQBgEuycPckt28FBdlMJSv3hP"
@@ -35,18 +35,11 @@ int indice_acc = 1;
 
 /*                ***********************Setup*****************************             */
 void setup(){
-  Serial.begin(9600);   //inizio la comunicazione seriale (mi serve per il monitor seriale)
+  Serial.begin(115200);   //inizio la comunicazione seriale (mi serve per il monitor seriale)
   s.begin(9600);
   SPI.begin();      //inizio la comunicazione via SPI
   mfrc522.PCD_Init();   //inizializzo il mio rfid reader
   
-  //sono i pin non utilizzati dal modulo wifi
-  digitalWrite(D3,HIGH);
-  digitalWrite(D8,LOW);
-  digitalWrite(D4,LOW);
-  pinMode(D3,OUTPUT);
-  pinMode(D8,OUTPUT);
-  pinMode(D4,OUTPUT);
    
   //connessione al mio wifi
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -106,6 +99,7 @@ void loop(){
   //controlla che il codice scannerizzato sia all'interno della lista dei codici che hanno già fatto accesso, se sì esce
   for(int i = 0; i < num_accessi; i++){
     if(accessi.get(i).equals(content.substring(1))){
+       s.write(2);
        Serial.println("Arrivederci :)");
        accessi.remove(i);
        num_accessi--;
@@ -153,18 +147,11 @@ void loop(){
   }
   
   //se la stringa corrisponde ad una dei codici che hanno accesso, l'accesso viene accordato, altrimenti non viene accordato
+  //stampa 1 se entra
   s.write(1);
   accessi.add(content.substring(1));
   num_accessi++;
   aggiornaPosti(true);
-    
-  digitalWrite(D3,LOW);
-  digitalWrite(D8,LOW);
-  digitalWrite(D4,HIGH);
-  delay(100); 
-  digitalWrite(D3,HIGH);
-  delay(5000);
-  digitalWrite(D4,LOW);
     
   //stampa sul monitor
   Serial.println("Accesso consentito"); 
