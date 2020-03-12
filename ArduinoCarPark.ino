@@ -20,16 +20,14 @@ const long utcOffsetInSeconds = 3600;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
 
-LinkedList<String> codici = LinkedList<String>();
-String accessi[20];
-String codici_effettuato_accesso[20];
-int num_codici;
-int indice;
-int indice_acc = 1;
-int i;
+LinkedList<String> codici = LinkedList<String>(); //vengono salvati tutti i codici che hanno accesso al sistema
+int indice_utente; //è il numero che identifica un utente
+String accessi[200]; //vengono salvati tutti i codici che fanno accesso al parcheggio
+int indice_acc = 1; //è il numero che identifica l'accesso da parte di un utente
 String msg;
+
 unsigned long previousMillis = 0; //will store last time LED was updated
-unsigned long interval = 20000; //interval at which to blink (milliseconds)
+unsigned long interval = 10000; //interval at which to blink (milliseconds)
 unsigned long currentMillis;
 
 /*                ***********************Setup*****************************             */
@@ -75,32 +73,60 @@ void setup(){
       break;
     i++;
   }
-  //salvo il numero di codici
-  num_codici = codici.size();
-  do Firebase.setInt("Posti/posti occupati", 0);
-  while(Firebase.failed());
 
-  //inizializzo gli accessi
-  Firebase.remove("ID clienti che hanno fatto accesso/");
+  //recupero le informazioni in caso di reset spontaneo del sistema (rendo il sistema robusto)
+  int j = 0, posti = 0;
+  while(1){
+    String codice_accesso_rec;
+    do{
+      codice_accesso_rec = Firebase.getString("ID clienti che hanno fatto accesso/" + String(j+1) + "/codice");
+    }
+    while(Firebase.failed());
+    if (Firebase.success() && !codice_accesso_rec.equals("")){
+      if(Firebase.getInt("ID clienti che hanno fatto accesso/" + String(j+1) + "/timestamp uscita") != 0)
+        accessi[j] = "ok";
+      else{
+        accessi[j] = codice_accesso_rec;
+        posti++;
+      }
+    }
+    else
+      break;
+    j++;
+  }
+
+  indice_acc = j+1;
+
+  do Firebase.setInt("Posti/posti occupati", posti);
+  while(Firebase.failed());
   
 }
 
 /*                ***********************Loop*****************************          */
 void loop(){
 
-  currentMillis = millis();
   delay(10);
   
-  if(currentMillis - previousMillis > interval) {
-    previousMillis = currentMillis; //save the last time you blinked the LED
+  if(millis() - previousMillis > interval) {
+    previousMillis = millis(); //save the last time you blinked the LED
     //fa un controllo delle richieste di pagamento
-    for(i = 1; i <= indice_acc; i++){
-      if(Firebase.getString("ID clienti che hanno fatto accesso/" + String(i) + "/uscita/richiesta").equals("true")){
+    for(int i = 1; i < indice_acc; i++){
+      if(Firebase.getBool("ID clienti che hanno fatto accesso/" + String(i) + "/uscita/richiesta") == true){
         salvaOra("richiesta", i, true);
         calcolaPrezzo(i);
-        Firebase.setString("ID clienti che hanno fatto accesso/" + String(i) + "/uscita/richiesta", "false");
+        Firebase.setBool("ID clienti che hanno fatto accesso/" + String(i) + "/uscita/richiesta", false);
       }
-      delay(500);
+      if(Firebase.getInt("ID clienti che hanno fatto accesso/" + String(i) + "/timestamp intenzione pagamento") != 0){
+        int tempo_passato = Firebase.getInt("ID clienti che hanno fatto accesso/" + String(i) + "/timestamp intenzione pagamento") - 
+        Firebase.getInt("ID clienti che hanno fatto accesso/" + String(i) + "/uscita/timestamp richiesta");
+        if(tempo_passato > 30){
+          int prezzo_base = Firebase.getInt("ID clienti che hanno fatto accesso/" + String(i) + "/uscita/prezzo");
+          Firebase.setInt("ID clienti che hanno fatto accesso/" + String(i) + "/uscita/supplemento",
+          (prezzo_base + (1+tempo_passato/30) < 20 ? (1+tempo_passato/30) : 20 - prezzo_base));
+          Firebase.remove("ID clienti che hanno fatto accesso/" + String(i) + "/timestamp intenzione pagamento");
+        }
+      }
+      delay(1);
     }
   }
   //controlla se viene appoggiato un badge
@@ -113,14 +139,13 @@ void loop(){
   else
     return;
 
-
   String content = msg;
   msg = "";
   Serial.println(content);
 
   //controlla che il codice scannerizzato sia all'interno della lista dei codici che hanno già fatto accesso, se sì esce
   for(int i = 0; i < indice_acc; i++){
-    if(accessi[i].equals(content) && codici_effettuato_accesso[i] != "ok"){
+    if(accessi[i].equals(content)){
       bool pagato;
       do pagato = Firebase.getBool("ID clienti che hanno fatto accesso/" + String(i+1) + "/pagato");
       while(Firebase.failed());
@@ -131,7 +156,6 @@ void loop(){
       }
        s.write(2);
        Serial.println("Arrivederci :)");
-       codici_effettuato_accesso[i] = "ok";
        accessi[i] = "ok";
        salvaOra("uscita", i+1, false);
 
@@ -157,10 +181,10 @@ void loop(){
   
   //controlla che il codice scannerizzato sia all'interno della lista dei codici che ha il permesso di accedere
   bool esiste = false;
-  for(int i = 0; i < num_codici; i++){
+  for(int i = 0; i < codici.size(); i++){
     if(codici.get(i).equals(content)){
        esiste = true;
-       indice = i+1;
+       indice_utente = i+1;
     }
   }
   if(esiste == false){
@@ -179,17 +203,15 @@ void loop(){
   Serial.println("Accesso consentito"); 
     
   //vengono mandati nel database i dati relativi all'accesso
-  String a = content;
-  do Firebase.setString("ID clienti che hanno fatto accesso/" + String(indice_acc) + "/codice", a);
+  do Firebase.setString("ID clienti che hanno fatto accesso/" + String(indice_acc) + "/codice", content);
   while(Firebase.failed());
   salvaOra("arrivo", indice_acc, false);
-  codici_effettuato_accesso[indice_acc - 1] = content;
   do Firebase.setBool("ID clienti che hanno fatto accesso/" + String(indice_acc) + "/pagato", false);
   while(Firebase.failed());
-  do Firebase.setString("ID clienti che hanno fatto accesso/" + String(indice_acc) + "/uscita/richiesta", "false");
+  do Firebase.setBool("ID clienti che hanno fatto accesso/" + String(indice_acc) + "/uscita/richiesta", false);
   while(Firebase.failed());
   Serial.print("Ciao ");
-  do Serial.print(Firebase.getString("ID clienti registrati/" + String(indice) + "/nome"));
+  do Serial.print(Firebase.getString("ID clienti registrati/" + String(indice_utente) + "/nome"));
   while(Firebase.failed());
   Serial.println(" :)");
   indice_acc++;
