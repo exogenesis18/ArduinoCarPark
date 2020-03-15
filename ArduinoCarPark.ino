@@ -8,12 +8,12 @@
 #include <WiFiUdp.h>
 #include <SoftwareSerial.h>
 
-SoftwareSerial s(D2, D3);
-
 #define FIREBASE_HOST "arduinocarpark-database.firebaseio.com"
 #define FIREBASE_AUTH "NKb6SKiqBLxTyzmbQBgEuycPckt28FBdlMJSv3hP"
 #define WIFI_SSID "prova"
 #define WIFI_PASSWORD "auri1998"
+
+SoftwareSerial s(D2, D3);
 
 //Da questo client prendo l'ora
 const long utcOffsetInSeconds = 3600;
@@ -151,17 +151,15 @@ void loop(){
       while(Firebase.failed());
       if(pagato == false){
         Serial.println("Non hai pagato");
-        delay(5000);
         return;
       }
-       s.write(2);
+       s.write(0x22);
        Serial.println("Arrivederci :)");
        accessi[i] = "ok";
        salvaOra("uscita", i+1, false);
 
        aggiornaPosti(false);
 
-       delay(5000);
        return;
     }
   }
@@ -175,7 +173,6 @@ void loop(){
   while(Firebase.failed());
   if(posti_occ >= posti_tot){
     Serial.println("Parcheggio pieno");
-    delay(5000);
     return;
   }
   
@@ -189,13 +186,12 @@ void loop(){
   }
   if(esiste == false){
     Serial.println("Accesso negato");
-    delay(5000);
     return;
   }
   
   //se la stringa corrisponde ad una dei codici che hanno accesso, l'accesso viene accordato, altrimenti non viene accordato
   //stampa 1 se entra
-  s.write(1);
+  s.write(0x11);
   accessi[indice_acc - 1] = content;
   aggiornaPosti(true);
     
@@ -215,8 +211,7 @@ void loop(){
   while(Firebase.failed());
   Serial.println(" :)");
   indice_acc++;
-  
-  delay(5000);
+ 
   return;
 }
 
