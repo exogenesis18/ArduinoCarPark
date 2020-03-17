@@ -4,19 +4,23 @@
 #include <SPI.h>
 #include <Servo.h>
 
-#define SS_PIN1 9
-#define RST_PIN1 13
+#define SS_PIN1 8
+#define RST_PIN1 42
 
 #define SS_PIN2 49
-#define RST_PIN2 8
+#define RST_PIN2 43
+
+#define RXTSOP 40      
+#define TXIR 10  
+
 
 RFID RC522_1(SS_PIN1, RST_PIN1);
 RFID RC522_2(SS_PIN2, RST_PIN2);
 
 Servo servo_entrata;
 Servo servo_uscita;
-SoftwareSerial s(10,11); //Rx, Tx
-LiquidCrystal lcd(12, 7, 5, 4, 3, 2);
+SoftwareSerial s(11,12); //Rx, Tx
+LiquidCrystal lcd(41, 7, 5, 4, 3, 2);
 
 int posti_tot = 10;
 int p = 0;
@@ -49,6 +53,18 @@ void setup() {
   pinMode(44, OUTPUT);
   digitalWrite(44, HIGH);
   pinMode(45, OUTPUT);
+
+  pinMode(TXIR, OUTPUT);               // Imposta il Pin come uscita
+  pinMode(RXTSOP, INPUT);    
+  TCCR2A = _BV(WGM21) | _BV(COM2A0) | _BV(COM2B0); // Timer impost. 
+                                                   // a 01010010
+  TCCR2B = _BV(CS20);                  // No prescaler
+  OCR2A = 210;                         // Il pin 11 è settato per emettere 
+                                       // un segnale a 38 khz
+  OCR2B = 210;                         // Il pin 3 è settato per emettere 
+                                       // un segnale a 38 khz
+
+  delay(5000);
   
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
@@ -71,30 +87,35 @@ void loop() {
    int n = s.read();
    n = n * 100;
    if(n == 1700){
+     posti_tot--;
      stampaSuDisplay();
      Serial.println("Qualcuno è entrato");
      digitalWrite(46, LOW);
      digitalWrite(47, HIGH);
      servo_entrata.write(18);
-     posti_tot--;
      delay(2000);
      digitalWrite(46, HIGH);
      digitalWrite(47, LOW);
      servo_entrata.write(98);
    }
    else if(n == 3400){
+    posti_tot++;
     stampaSuDisplay();
     Serial.println("Qualcuno è uscito");
     digitalWrite(44, LOW);
     digitalWrite(45, HIGH);
     servo_uscita.write(18);
-    posti_tot++;
     delay(2000);
     digitalWrite(44, HIGH);
     digitalWrite(45, LOW);
     servo_uscita.write(98);
   }
  }
+
+  int res = digitalRead(RXTSOP);
+  delay(200);
+  if(res == 0)
+    Serial.println("Abbassa sbarra");
 }
 
 /*                    **************Funzioni Ausiliarie************************    */
