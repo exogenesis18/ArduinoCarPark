@@ -10,8 +10,7 @@
 #define SS_PIN2 49
 #define RST_PIN2 43
 
-#define RXTSOP 40      
-#define TXIR 10  
+#define RXTSOP 40        
 
 
 RFID RC522_1(SS_PIN1, RST_PIN1);
@@ -53,16 +52,10 @@ void setup() {
   pinMode(44, OUTPUT);
   digitalWrite(44, HIGH);
   pinMode(45, OUTPUT);
+  pinMode(RXTSOP, OUTPUT);
+  digitalWrite(RXTSOP, HIGH);
+   
 
-  pinMode(TXIR, OUTPUT);               // Imposta il Pin come uscita
-  pinMode(RXTSOP, INPUT);    
-  TCCR2A = _BV(WGM21) | _BV(COM2A0) | _BV(COM2B0); // Timer impost. 
-                                                   // a 01010010
-  TCCR2B = _BV(CS20);                  // No prescaler
-  OCR2A = 210;                         // Il pin 11 è settato per emettere 
-                                       // un segnale a 38 khz
-  OCR2B = 210;                         // Il pin 3 è settato per emettere 
-                                       // un segnale a 38 khz
 
   delay(5000);
   
@@ -112,10 +105,13 @@ void loop() {
   }
  }
 
-  int res = digitalRead(RXTSOP);
+  int res = analogRead(0);
+  if(res < 1010)
+    Serial.println("Nessuna macchina");
+  else
+    Serial.println("Una macchina");
+
   delay(200);
-  if(res == 0)
-    Serial.println("Abbassa sbarra");
 }
 
 /*                    **************Funzioni Ausiliarie************************    */
