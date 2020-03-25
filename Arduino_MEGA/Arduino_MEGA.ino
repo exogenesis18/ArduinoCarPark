@@ -7,10 +7,10 @@
 #define SS_PIN1 8
 #define RST_PIN1 42
 
-#define SS_PIN2 49
+#define SS_PIN2 9
 #define RST_PIN2 43
 
-#define RXTSOP 40        
+//#define RXTSOP 40        
 
 
 RFID RC522_1(SS_PIN1, RST_PIN1);
@@ -23,6 +23,9 @@ LiquidCrystal lcd(41, 7, 5, 4, 3, 2);
 
 int posti_tot = 10;
 int p = 0;
+/*int valore_iniziale;
+int valore;
+boolean sotto_la_sbarra = false;*/
 
 unsigned long previousMillis = 0; //will store last time LED was updated
 unsigned long interval = 5000; //interval at which to blink (milliseconds)
@@ -36,9 +39,9 @@ void setup() {
   SPI.begin();   
   RC522_1.init();
   RC522_2.init();
-  servo_entrata.attach(48);
+  servo_entrata.attach(53);
   servo_entrata.write(98);
-  servo_uscita.attach(53);
+  servo_uscita.attach(48);
   servo_uscita.write(98);
   lcd.begin(16, 2);
   lcd.print("Posti liberi:");
@@ -52,10 +55,10 @@ void setup() {
   pinMode(44, OUTPUT);
   digitalWrite(44, HIGH);
   pinMode(45, OUTPUT);
-  pinMode(RXTSOP, OUTPUT);
+  /*pinMode(RXTSOP, OUTPUT);
   digitalWrite(RXTSOP, HIGH);
-   
-
+  valore_iniziale = analogRead(0);
+  Serial.println(valore_iniziale);*/
 
   delay(5000);
   
@@ -78,40 +81,33 @@ void loop() {
  
  if(s.available() > 0){
    int n = s.read();
-   n = n * 100;
-   if(n == 1700){
+   if(n == 17){
      posti_tot--;
      stampaSuDisplay();
      Serial.println("Qualcuno è entrato");
      digitalWrite(46, LOW);
      digitalWrite(47, HIGH);
      servo_entrata.write(18);
-     delay(2000);
+     //gestisciSbarra();
+     delay(5000);
+     servo_entrata.write(98);
      digitalWrite(46, HIGH);
      digitalWrite(47, LOW);
-     servo_entrata.write(98);
    }
-   else if(n == 3400){
+   else if(n == 34){
     posti_tot++;
     stampaSuDisplay();
     Serial.println("Qualcuno è uscito");
     digitalWrite(44, LOW);
     digitalWrite(45, HIGH);
     servo_uscita.write(18);
-    delay(2000);
+    //gestisciSbarra();
+    delay(5000);
+    servo_uscita.write(98);
     digitalWrite(44, HIGH);
     digitalWrite(45, LOW);
-    servo_uscita.write(98);
   }
  }
-
-  int res = analogRead(0);
-  if(res < 1010)
-    Serial.println("Nessuna macchina");
-  else
-    Serial.println("Una macchina");
-
-  delay(200);
 }
 
 /*                    **************Funzioni Ausiliarie************************    */
@@ -142,3 +138,19 @@ void stampaSuDisplay(){
   lcd.setCursor(0, 1);
   lcd.print(posti_tot);
 }
+
+/*void gestisciSbarra(){
+  while(true){
+   valore = analogRead(0);
+   Serial.println(valore);
+    if(abs(valore - valore_iniziale) > 50){
+     sotto_la_sbarra = true;
+     Serial.println("sotto la sbarra");
+    }
+    if((sotto_la_sbarra == true) && (abs(valore - valore_iniziale) <= 20))
+     break;
+    delay(200);
+   }
+   delay(1000);
+   sotto_la_sbarra = false;
+}*/
