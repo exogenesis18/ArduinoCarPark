@@ -7,11 +7,8 @@
 #define SS_PIN1 8
 #define RST_PIN1 42
 
-#define SS_PIN2 9
-#define RST_PIN2 43
-
-//#define RXTSOP 40        
-
+#define SS_PIN2 26
+#define RST_PIN2 22
 
 RFID RC522_1(SS_PIN1, RST_PIN1);
 RFID RC522_2(SS_PIN2, RST_PIN2);
@@ -21,13 +18,11 @@ Servo servo_uscita;
 SoftwareSerial s(11,12); //Rx, Tx
 LiquidCrystal lcd(41, 7, 5, 4, 3, 2);
 
-int posti_tot = 10;
+int posti_tot = 20;
 int p = 0;
-/*int valore_iniziale;
-int valore;
-boolean sotto_la_sbarra = false;*/
 
-unsigned long previousMillis = 0; //will store last time LED was updated
+unsigned long previousMillis1 = 0; //will store last time LED was updated
+unsigned long previousMillis2 = 0;
 unsigned long interval = 5000; //interval at which to blink (milliseconds)
 unsigned long currentMillis;
 
@@ -46,7 +41,7 @@ void setup() {
   lcd.begin(16, 2);
   lcd.print("Posti liberi:");
   lcd.setCursor(0, 1);
-  lcd.print("10/10");
+  lcd.print("20/20");
   analogWrite(6, 20);
   s.begin(9600);
   pinMode(46, OUTPUT);
@@ -55,12 +50,6 @@ void setup() {
   pinMode(44, OUTPUT);
   digitalWrite(44, HIGH);
   pinMode(45, OUTPUT);
-  /*pinMode(RXTSOP, OUTPUT);
-  digitalWrite(RXTSOP, HIGH);
-  valore_iniziale = analogRead(0);
-  Serial.println(valore_iniziale);*/
-
-  delay(5000);
   
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
@@ -70,14 +59,24 @@ void setup() {
 /*                ***********************Loop*****************************          */
 
 void loop() {
- if(millis() - previousMillis > interval) {
-  previousMillis = millis(); //save the last time you blinked the LED
-  if ((RC522_1.isCard() && RC522_1.readCardSerial()) || (RC522_2.isCard() && RC522_2.readCardSerial())) {
-    Serial.println(leggiCodice());
-    s.print(leggiCodice());
-   }
+
+  if (RC522_1.isCard() && RC522_1.readCardSerial()) {
+    if(millis() - previousMillis1 > interval) {
+      previousMillis1 = millis(); //save the last time you blinked the LED
+      Serial.println(leggiCodice1());
+       s.print(leggiCodice1());
+    }
+    RC522_1.halt();
+  }
+  if (RC522_2.isCard() && RC522_2.readCardSerial()){
+    if(millis() - previousMillis2 > interval) {
+       previousMillis2 = millis(); //save the last time you blinked the LED
+        Serial.println(leggiCodice2());
+        s.print(leggiCodice2());
+    }
+    RC522_2.halt();
+  }
   delay(50);
- }
  
  if(s.available() > 0){
    int n = s.read();
@@ -88,7 +87,6 @@ void loop() {
      digitalWrite(46, LOW);
      digitalWrite(47, HIGH);
      servo_entrata.write(18);
-     //gestisciSbarra();
      delay(5000);
      servo_entrata.write(98);
      digitalWrite(46, HIGH);
@@ -100,8 +98,7 @@ void loop() {
     Serial.println("Qualcuno è uscito");
     digitalWrite(44, LOW);
     digitalWrite(45, HIGH);
-    servo_uscita.write(18);
-    //gestisciSbarra();
+    servo_uscita.write(178);
     delay(5000);
     servo_uscita.write(98);
     digitalWrite(44, HIGH);
@@ -112,18 +109,28 @@ void loop() {
 
 /*                    **************Funzioni Ausiliarie************************    */
 
-int leggiCodice(){
+int leggiCodice1(){
   
   //viene costruita la stringa del codice
   int content = 0, c = 10000;
   for(int i=0;i < 4;i++){
-    if(RC522_1.readCardSerial())
-      content+= RC522_1.serNum[i] * c;
-    else
-      content+= RC522_2.serNum[i] * c;
+    content+= RC522_1.serNum[i] * c;
     c = c * 10000;
   }
+  if(content < 0)
+    content = content * -1;
+    
+  return content;
+}
 
+int leggiCodice2(){
+  
+  //viene costruita la stringa del codice
+  int content = 0, c = 10000;
+  for(int i=0;i < 4;i++){
+    content+= RC522_2.serNum[i] * c;
+    c = c * 10000;
+  }
   if(content < 0)
     content = content * -1;
     
@@ -138,19 +145,3 @@ void stampaSuDisplay(){
   lcd.setCursor(0, 1);
   lcd.print(posti_tot);
 }
-
-/*void gestisciSbarra(){
-  while(true){
-   valore = analogRead(0);
-   Serial.println(valore);
-    if(abs(valore - valore_iniziale) > 50){
-     sotto_la_sbarra = true;
-     Serial.println("sotto la sbarra");
-    }
-    if((sotto_la_sbarra == true) && (abs(valore - valore_iniziale) <= 20))
-     break;
-    delay(200);
-   }
-   delay(1000);
-   sotto_la_sbarra = false;
-}*/
