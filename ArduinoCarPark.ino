@@ -123,8 +123,11 @@ void loop(){
           int prezzo_base = Firebase.getInt("ID clienti che hanno fatto accesso/" + String(i) + "/uscita/prezzo");
           Firebase.setInt("ID clienti che hanno fatto accesso/" + String(i) + "/uscita/supplemento",
           (prezzo_base + (1+tempo_passato/30) < 20 ? (1+tempo_passato/30) : 20 - prezzo_base));
-          Firebase.remove("ID clienti che hanno fatto accesso/" + String(i) + "/timestamp intenzione pagamento");
         }
+        else{
+          Firebase.setInt("ID clienti che hanno fatto accesso/" + String(i) + "/uscita/supplemento", 0);
+        }
+        Firebase.remove("ID clienti che hanno fatto accesso/" + String(i) + "/timestamp intenzione pagamento");
       }
       delay(1);
     }
