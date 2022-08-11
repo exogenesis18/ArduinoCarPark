@@ -124,9 +124,6 @@ void loop(){
           Firebase.setInt("ID clienti che hanno fatto accesso/" + String(i) + "/uscita/supplemento",
           (prezzo_base + (1+tempo_passato/30) < 20 ? (1+tempo_passato/30) : 20 - prezzo_base));
         }
-        else{
-          Firebase.setInt("ID clienti che hanno fatto accesso/" + String(i) + "/uscita/supplemento", 0);
-        }
         Firebase.remove("ID clienti che hanno fatto accesso/" + String(i) + "/timestamp intenzione pagamento");
       }
       delay(1);
@@ -211,6 +208,8 @@ void loop(){
   while(Firebase.failed());
   Serial.print("Ciao ");
   do Serial.print(Firebase.getString("ID clienti registrati/" + String(indice_utente) + "/nome"));
+  while(Firebase.failed());
+  do Firebase.setInt("ID clienti che hanno fatto accesso/" + String(indice_acc) + "/uscita/supplemento", 0);
   while(Firebase.failed());
   Serial.println(" :)");
   indice_acc++;

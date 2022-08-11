@@ -1,0 +1,284 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7350 64-bit) (preloaded format=pdflatex 2020.4.23)  10 AUG 2022 19:08
+entering extended mode
+**"C:/Users/Aurora/Desktop/ArduinoCarPark/tesi università/tesi.tex"
+("C:/Users/Aurora/Desktop/ArduinoCarPark/tesi università/tesi.tex"
+LaTeX2e <2020-02-02> patch level 5
+L3 programming layer <2020-03-06>
+("C:\Program Files\MiKTeX 2.9\tex/latex/base\report.cls"
+Document Class: report 2019/12/20 v1.4l Standard LaTeX document class
+("C:\Program Files\MiKTeX 2.9\tex/latex/base\size10.clo"
+File: size10.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
+)
+\c@part=\count167
+\c@chapter=\count168
+\c@section=\count169
+\c@subsection=\count170
+\c@subsubsection=\count171
+\c@paragraph=\count172
+\c@subparagraph=\count173
+\c@figure=\count174
+\c@table=\count175
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen134
+)
+("C:\Program Files\MiKTeX 2.9\tex/latex/base\fontenc.sty"
+Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
+)
+("C:\Program Files\MiKTeX 2.9\tex/latex/base\inputenc.sty"
+Package: inputenc 2018/08/11 v1.3c Input encoding file
+\inpenc@prehook=\toks15
+\inpenc@posthook=\toks16
+)
+("C:\Program Files\MiKTeX 2.9\tex/generic/babel\babel.sty"
+Package: babel 2020/02/28 3.41 The Babel package
+
+("C:\Program Files\MiKTeX 2.9\tex/generic/babel\switch.def"
+File: switch.def 2020/02/28 3.41 Babel switching mechanism
+)
+*************************************
+* Local config file bblopts.cfg used
+*
+("C:\Program Files\MiKTeX 2.9\tex/latex/arabi\bblopts.cfg"
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of
+ babel
+)
+(C:\Users\Aurora\AppData\Roaming\MiKTeX\2.9\tex/latex/babel-italian\italian.ldf
+Language: italian 2019/11/16 v.1.4.03 Italian support for the babel system
+("C:\Program Files\MiKTeX 2.9\tex/generic/babel\babel.def"
+File: babel.def 2020/02/28 3.41 Babel common definitions
+\babel@savecnt=\count176
+\U@D=\dimen135
+
+("C:\Program Files\MiKTeX 2.9\tex/generic/babel\txtbabel.def")
+\bbl@readstream=\read2
+\bbl@dirlevel=\count177
+)
+\it@lettering=\count178
+\it@doublequoteactive=\count179
+\it@ISOcompliance=\count180
+))
+("C:\Program Files\MiKTeX 2.9\tex/latex/etoolbox\etoolbox.sty"
+Package: etoolbox 2019/09/21 v2.5h e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count181
+)
+("C:\Program Files\MiKTeX 2.9\tex/latex/url\url.sty"
+\Urlmuskip=\muskip16
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(C:\Users\Aurora\AppData\Roaming\MiKTeX\2.9\tex/latex/frontespizio\frontespizio
+.sty
+Package: frontespizio 2011/09/21 1.4a (Enrico Gregorio)
+ ("C:\Program Files\MiKTeX 2.9\tex/latex/tools\afterpage.sty"
+Package: afterpage 2014/10/28 v1.08 After-Page Package (DPC)
+\AP@output=\toks17
+\AP@partial=\box45
+\AP@footins=\box46
+)
+("C:\Program Files\MiKTeX 2.9\tex/latex/graphics\graphicx.sty"
+Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex/latex/graphics\keyval.sty"
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks18
+)
+("C:\Program Files\MiKTeX 2.9\tex/latex/graphics\graphics.sty"
+Package: graphics 2019/11/30 v1.4a Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex/latex/graphics\trig.sty"
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+("C:\Program Files\MiKTeX 2.9\tex/latex/graphics-cfg\graphics.cfg"
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 105.
+
+("C:\Program Files\MiKTeX 2.9\tex/latex/graphics-def\pdftex.def"
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen136
+\Gin@req@width=\dimen137
+)
+(C:\Users\Aurora\AppData\Roaming\MiKTeX\2.9\tex/generic/atbegshi\atbegshi.sty
+Package: atbegshi 2019/12/05 v1.19 At begin shipout hook (HO)
+
+(C:\Users\Aurora\AppData\Roaming\MiKTeX\2.9\tex/generic/infwarerr\infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+) (C:\Users\Aurora\AppData\Roaming\MiKTeX\2.9\tex/generic/ltxcmds\ltxcmds.sty
+Package: ltxcmds 2019/12/15 v1.24 LaTeX kernel commands for general use (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex/generic/iftex\iftex.sty"
+Package: iftex 2020/03/06 v1.0d TeX engine tests
+))
+("C:\Program Files\MiKTeX 2.9\tex/latex/environ\environ.sty"
+Package: environ 2014/05/04 v0.3 A new way to define environments
+
+("C:\Program Files\MiKTeX 2.9\tex/latex/trimspaces\trimspaces.sty"
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+)
+\@envbody=\toks19
+)
+("C:\Program Files\MiKTeX 2.9\tex/generic/iftex\ifpdf.sty"
+Package: ifpdf 2019/10/25 v3.4 ifpdf legacy package. Use iftex instead.
+)
+("C:\Program Files\MiKTeX 2.9\tex/generic/iftex\ifxetex.sty"
+Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
+)
+\front@out=\write3
+\openout3 = `tesi-frn.tex'.
+
+)
+("C:\Program Files\MiKTeX 2.9\tex/latex/l3backend\l3backend-pdfmode.def"
+File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
+\l__kernel_color_stack_int=\count182
+\l__pdf_internal_box=\box47
+)
+No file tesi.aux.
+\openout1 = `tesi.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Info: Redefining \it@ocap on input line 8.
+LaTeX Info: Redefining \it@ccap on input line 8.
+("C:\Program Files\MiKTeX 2.9\tex/context/base/mkii\supp-pdf.mkii"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count183
+\scratchdimen=\dimen138
+\scratchbox=\box48
+\nofMPsegments=\count184
+\nofMParguments=\count185
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count186
+\MPscratchDim=\dimen139
+\MPnumerator=\count187
+\makeMPintoPDFobject=\count188
+\everyMPtoPDFconversion=\toks21
+) ("C:\Program Files\MiKTeX 2.9\tex/latex/epstopdf-pkg\epstopdf-base.sty"
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+)
+\AtBeginShipoutBox=\box49
+<tesi-frn.pdf, id=1, 597.50829pt x 845.0471pt>
+File: tesi-frn.pdf Graphic file (type pdf)
+<use tesi-frn.pdf>
+Package pdftex.def Info: tesi-frn.pdf  used on input line 10.
+(pdftex.def)             Requested size: 597.50682pt x 845.04504pt.
+
+[1
+
+ <C:/Users/Aurora/Desktop/ArduinoCarPark/tesi università/tesi-frn.pdf{C:/Users
+/Aurora/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}>]
+
+LaTeX Warning: Citation `Ansari:BasedHealthcareApplications' on page 1 undefine
+d on input line 25.
+
+
+LaTeX Warning: Citation `Ashton: ThatInternetofThings'Thing' on page 1 undefine
+d on input line 25.
+
+[1]
+No file tesi.toc.
+\tf@toc=\write4
+\openout4 = `tesi.toc'.
+
+[1
+
+]
+Capitolo 1.
+
+LaTeX Warning: Citation `Feng:InternationJournalOfCommunicationSystems' on page
+ 2 undefined on input line 32.
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 34.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 34.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 34.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 34.
+
+LaTeX Warning: Citation `Suresh:StateArtReviewIoTHistoryTechnologyFieldsDeploym
+ent' on page 2 undefined on input line 34.
+
+[2
+
+]
+Capitolo 2.
+
+LaTeX Warning: Citation `Sun:ApplicationRFIDTechnologyLogisticsInternetofThings
+' on page 3 undefined on input line 38.
+
+<schemaRFID.png, id=41, 166.6225pt x 66.74937pt>
+File: schemaRFID.png Graphic file (type png)
+<use schemaRFID.png>
+Package pdftex.def Info: schemaRFID.png  used on input line 41.
+(pdftex.def)             Requested size: 166.62209pt x 66.74919pt.
+[3
+
+ <C:/Users/Aurora/Desktop/ArduinoCarPark/tesi università/schemaRFID.png>]
+
+LaTeX Warning: Citation `Kaur:RFIDTechnologyPrinciplesAdvantagesLimitationsAppl
+ications' on page 4 undefined on input line 54.
+
+
+LaTeX Warning: Citation `Xiaolin:RFIDTechnologyApplicationsIoT' on page 4 undef
+ined on input line 57.
+
+<graficoRFID.png, id=48, 823.075pt x 530.98375pt>
+File: graficoRFID.png Graphic file (type png)
+<use graficoRFID.png>
+Package pdftex.def Info: graficoRFID.png  used on input line 60.
+(pdftex.def)             Requested size: 246.9244pt x 159.29634pt.
+[4 <C:/Users/Aurora/Desktop/ArduinoCarPark/tesi università/graficoRFID.png>]
+Capitolo 3.
+
+LaTeX Warning: Citation `Jadeja:Cloudcomputingconceptsarchitectureandchallenges
+' on page 5 undefined on input line 67.
+
+<mccarthy.jpg, id=53, 200.75pt x 200.75pt>
+File: mccarthy.jpg Graphic file (type jpg)
+<use mccarthy.jpg>
+Package pdftex.def Info: mccarthy.jpg  used on input line 70.
+(pdftex.def)             Requested size: 100.37474pt x 100.37474pt.
+[5
+
+ <C:/Users/Aurora/Desktop/ArduinoCarPark/tesi università/mccarthy.jpg>]
+
+LaTeX Warning: Citation `Ray:AsurveyofIoTcloudplatforms' on page 6 undefined on
+ input line 74.
+
+
+LaTeX Warning: Citation `Botta:IntegrationofCloudcomputingandInternetofThingsAs
+urvey' on page 6 undefined on input line 85.
+
+<schemaCloudIoT.PNG, id=58, 409.48183pt x 227.50597pt>
+File: schemaCloudIoT.PNG Graphic file (type png)
+<use schemaCloudIoT.PNG>
+Package pdftex.def Info: schemaCloudIoT.PNG  used on input line 89.
+(pdftex.def)             Requested size: 348.06119pt x 193.38097pt.
+
+Overfull \hbox (3.06119pt too wide) in paragraph at lines 89--90
+ [][] 
+ []
+
+[6 <C:/Users/Aurora/Desktop/ArduinoCarPark/tesi università/schemaCloudIoT.PNG>
+]
+Capitolo 4.
+
+!pdfTeX error: pdflatex (file C:/Users/Aurora/Desktop/ArduinoCarPark/tesi unive
+rsità/teamarduino.png): libpng: internal error
+ ==> Fatal error occurred, no output PDF file produced!

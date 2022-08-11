@@ -5,10 +5,10 @@
 #include <Servo.h>
 
 #define SS_PIN1 8
-#define RST_PIN1 42
+#define RST_PIN1 5
 
-#define SS_PIN2 26
-#define RST_PIN2 22
+#define SS_PIN2 10
+#define RST_PIN2 5
 
 RFID RC522_1(SS_PIN1, RST_PIN1);
 RFID RC522_2(SS_PIN2, RST_PIN2);
@@ -16,7 +16,7 @@ RFID RC522_2(SS_PIN2, RST_PIN2);
 Servo servo_entrata;
 Servo servo_uscita;
 SoftwareSerial s(11,12); //Rx, Tx
-LiquidCrystal lcd(41, 7, 5, 4, 3, 2);
+LiquidCrystal lcd(41, 7, 9, 4, 3, 2);
 
 int posti_tot = 20;
 int p = 0;
@@ -34,9 +34,9 @@ void setup() {
   SPI.begin();   
   RC522_1.init();
   RC522_2.init();
-  servo_entrata.attach(53);
+  servo_entrata.attach(37);
   servo_entrata.write(98);
-  servo_uscita.attach(48);
+  servo_uscita.attach(24);
   servo_uscita.write(98);
   lcd.begin(16, 2);
   lcd.print("Posti liberi:");
